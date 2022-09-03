@@ -14,7 +14,6 @@ module.exports.getAllUsers = (req, res) => {
         // }
 
         !err ? res.status(200).send(data) : res.status(500).send({ err })
-
     })
 }
 module.exports.getRandomUser = (req, res) => {
@@ -27,8 +26,14 @@ module.exports.getRandomUser = (req, res) => {
     })
 }
 module.exports.addUser = (req, res, next) => {
-    console.log(__dirname + "addUser")
-    next()
+    fs.readFile('data/user.json', 'utf8', (err, data) => {
+        let dataArray = JSON.parse(data);
+        dataArray['users'].push(req.body);
+        fs.writeFile("data/user.json", JSON.stringify(dataArray), (err) => {
+            !err ? res.send(dataArray) : res.send(err)
+        })
+
+    })
 
 }
 module.exports.updateUser = (req, res, next) => {
