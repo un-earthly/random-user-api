@@ -37,26 +37,31 @@ module.exports.addUser = (req, res, next) => {
 
 }
 module.exports.updateUser = (req, res, next) => {
-    // console.log(__dirname + "updateUser")
-    // next()
     const { gender, name, contact, address, photoUrl } = req.body
     const pid = req.params.id
     fs.readFile('data/user.json', 'utf8', (err, data) => {
         let dataArray = JSON.parse(data);
-        const users = dataArray['users']
-        const user = users.find(user => user.id === pid)
-        // console.log(user)
+        const users = dataArray['users'];
+        const user = users.find(user => user.id === pid);
         var userIndex = users.indexOf(user);
-        // console.log(users.slice(userIndex))
-        // console.log(users[345], userIndex)
-        // res.send(users)
-
-        user.gender = gender
-
+        if (gender) {
+            user.gender = gender
+        }
+        if (name) {
+            user.name = name
+        }
+        if (contact) {
+            user.contact = contact
+        }
+        if (address) {
+            user.address = address
+        }
+        if (photoUrl) {
+            user.photoUrl = photoUrl
+        }
 
         if (userIndex !== -1) {
             users[userIndex] = user;
-
             fs.writeFile("data/user.json", JSON.stringify(dataArray), (err) => {
                 !err ? res.send(dataArray) : res.send(err)
             })
