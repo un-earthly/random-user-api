@@ -19,9 +19,9 @@ module.exports.getAllUsers = (req, res) => {
 module.exports.getRandomUser = (req, res) => {
 
     fs.readFile('data/user.json', 'utf8', (err, data) => {
-        const dataArray = JSON.parse(data)
-        const random = Math.floor(Math.random() * (dataArray.length))
-        res.send({ random: dataArray[random] })
+        const { users } = JSON.parse(data)
+        const random = Math.floor(Math.random() * (users.length))
+        res.send({ random: users[random] })
 
     })
 }
@@ -39,6 +39,11 @@ module.exports.addUser = (req, res, next) => {
 module.exports.updateUser = (req, res, next) => {
     const { gender, name, contact, address, photoUrl } = req.body
     const pid = req.params.id
+    // console.log()
+    if (Object.entries(req.body).length === 0) {
+        return res.status(400).send({ err: 'No Data found in request body to update User' })
+    }
+
     fs.readFile('data/user.json', 'utf8', (err, data) => {
         let dataArray = JSON.parse(data);
         const users = dataArray['users'];
@@ -71,12 +76,21 @@ module.exports.updateUser = (req, res, next) => {
 
 }
 module.exports.bulkUpdateUser = (req, res, next) => {
-    console.log(__dirname + "updateUser")
-    next()
+    // const ids = 
 
 }
 module.exports.deleteUser = (req, res, next) => {
-    console.log(__dirname + "deleteUser")
-    next()
+    const pid = req.params.id
+
+    fs.readFile('data/user.json', 'utf8', (err, data) => {
+        let dataArray = JSON.parse(data);
+        const users = dataArray['users']
+        const newUsers = users.filter(user => user.id !== pid);
+        dataArray = newUsers
+        fs.writeFile("data/user.json", JSON.stringify(dataArray), (err) => {
+            !err ? res.send(dataArray) : res.send(err)
+        })
+
+    })
 
 }

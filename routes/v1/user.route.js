@@ -8,6 +8,6 @@ router.get("/random", getRandomUser)
 router.post("/save", addUser)
 router.patch("/update/:id", updateUser)
 router.patch("/bulk-update", bulkUpdateUser)
-router.delete("/delete", deleteUser)
+router.delete("/delete/:id", deleteUser)
 
 module.exports = router;
