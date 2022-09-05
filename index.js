@@ -10,6 +10,6 @@ app.use("/v1/user", userRoute)
 app.get("/", (req, res) => {
     res.send({ "Avaiable get Routes ": " v1/user/random && v1/user/all" })
 })
-app.listen(process.env.HOST, () => {
+app.listen(process.env.HOST || 80, () => {
     console.log(`server is running in ${process.env.HOST}`)
 })
