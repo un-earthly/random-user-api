@@ -39,7 +39,6 @@ module.exports.addUser = (req, res, next) => {
 module.exports.updateUser = (req, res, next) => {
     const { gender, name, contact, address, photoUrl } = req.body
     const pid = req.params.id
-    // console.log()
     if (Object.entries(req.body).length === 0) {
         return res.status(400).send({ err: 'No Data found in request body to update User' })
     }
@@ -76,8 +75,56 @@ module.exports.updateUser = (req, res, next) => {
 
 }
 module.exports.bulkUpdateUser = (req, res, next) => {
-    // const ids = 
+    const toUpdate = req.body
 
+    if (Object.entries(toUpdate).length === 0) return res.status(400).send({ err: 'No Data found in request body to update User' })
+
+    const usersIdsArray = toUpdate.map(user => user.id)
+    if (!usersIdsArray) return res.status(411).send({ err: 'No Id found in request body to update Users' })
+    fs.readFile('data/user.json', 'utf8', (err, data) => {
+        let dataArray = JSON.parse(data);
+        const users = dataArray['users'];
+        const filteredUsers = users.filter(function (user) {
+            return toUpdate.filter(function (u) {
+                return u.id == user.id;
+            }).length !== 0
+        })
+        const usersIndex = filteredUsers.map(user => users.indexOf(user))
+
+
+        toUpdate.map((user, index) => {
+            
+            if (user.gender) {
+                filteredUsers[index].gender = user.gender
+            }
+            if (user.name) {
+                filteredUsers[index].name = user.name
+            }
+            if (user.contact) {
+                filteredUsers[index].contact = contact
+            }
+            if (user.address) {
+                filteredUsers[index].address = user.address
+            }
+            if (user.photoUrl) {
+                filteredUsers[index].photoUrl = user.photoUrl
+            }
+
+        })
+
+        if (usersIndex.length !== 0) {
+            for (let i = 0; i < usersIndex.length; i++) {
+                usersIndex[i] = filteredUsers[i]
+            }
+            fs.writeFile("data/user.json", JSON.stringify(dataArray), (err) => {
+                !err ? res.send(dataArray) : res.send(err)
+            })
+
+        }
+
+
+
+    })
 }
 module.exports.deleteUser = (req, res, next) => {
     const pid = req.params.id
