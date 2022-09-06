@@ -1,4 +1,4 @@
-> Welcome to the [**`Random User Api `**](https://whispering-depths-54743.herokuapp.com/api/v1/user/all) api!
+> Welcome to the [**`Random User Api `**](https://whispering-depths-54743.herokuapp.com/) api!
 
 > This is a simple api that allows you to create, read, random read, update , bulk update, delete using the following endpoints:
 
@@ -12,4 +12,4 @@
 
 ```
 
-> The api is hosted on Heroku , to get the api [**`Click here`**](https://whispering-depths-54743.herokuapp.com/api/v1/user/random)
+> The api is hosted on Heroku , to get the api [**`Click here`**](https://whispering-depths-54743.herokuapp.com/api/v1/user/all)
