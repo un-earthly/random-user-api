@@ -3,11 +3,11 @@ const { addUser, bulkUpdateUser, deleteUser, getAllUsers, updateUser, getRandomU
 const router = require("express").Router();
 
 
-router.get("/all", getAllUsers)
-router.get("/random", getRandomUser)
-router.post("/save", addUser)
-router.patch("/update/:id", updateUser)
-router.patch("/bulk-update", bulkUpdateUser)
-router.delete("/delete/:id", deleteUser)
+router
+router
+router
+router
+router
+router
 
 module.exports = router;
