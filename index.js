@@ -15,13 +15,13 @@ app.get("/", (req, res) => {
 })
 
 app.get("/api/v1/all", (req, res) => {
-    fs.readFile('data/user.json', 'utf8', (err, data) => {
+    fs.readFile('user.json', 'utf8', (err, data) => {
         !err ? res.status(200).send(data) : res.status(500).send({ err })
     })
 })
 app.get("/api/v1/random", (req, res) => {
 
-    fs.readFile('data/user.json', 'utf8', (err, data) => {
+    fs.readFile('user.json', 'utf8', (err, data) => {
         if (!err) {
             const { users } = JSON.parse(data)
             const random = Math.floor(Math.random() * (users.length))
@@ -35,11 +35,12 @@ app.get("/api/v1/random", (req, res) => {
     })
 })
 app.post("/api/v1/save", (req, res) => {
-    fs.readFile('data/user.json', 'utf8', (err, data) => {
+    fs.readFile('user.json', 'utf8', (err, data) => {
         if (!err) {
             let dataArray = JSON.parse(data);
+            req.body.id = require('crypto').randomBytes(12).toString('hex');
             dataArray['users'].push(req.body);
-            fs.writeFile("data/user.json", JSON.stringify(dataArray), (err) => {
+            fs.writeFile("user.json", JSON.stringify(dataArray), (err) => {
                 !err ? res.send(dataArray) : res.send(err)
             })
         }
@@ -58,7 +59,7 @@ app.patch("/api/v1/update/:id", (req, res) => {
         return res.status(400).send({ err: 'No Data found in request body to update User' })
     }
 
-    fs.readFile('data/user.json', 'utf8', (err, data) => {
+    fs.readFile('user.json', 'utf8', (err, data) => {
         if (!err) {
             let dataArray = JSON.parse(data);
             const users = dataArray['users'];
@@ -82,7 +83,7 @@ app.patch("/api/v1/update/:id", (req, res) => {
 
             if (userIndex !== -1) {
                 users[userIndex] = user;
-                fs.writeFile("data/user.json", JSON.stringify(dataArray), (err) => {
+                fs.writeFile("user.json", JSON.stringify(dataArray), (err) => {
                     !err ? res.send(dataArray) : res.send(err)
                 })
             }
@@ -101,7 +102,7 @@ app.patch("/api/v1/bulk-update", (req, res) => {
 
     const usersIdsArray = toUpdate.map(user => user.id)
     if (!usersIdsArray) return res.status(411).send({ err: 'No Id found in request body to update Users' })
-    fs.readFile('data/user.json', 'utf8', (err, data) => {
+    fs.readFile('user.json', 'utf8', (err, data) => {
         if (err) return res.status(500).send({ err })
 
         let dataArray = JSON.parse(data);
@@ -138,7 +139,7 @@ app.patch("/api/v1/bulk-update", (req, res) => {
             for (let i = 0; i < usersIndex.length; i++) {
                 usersIndex[i] = filteredUsers[i]
             }
-            fs.writeFile("data/user.json", JSON.stringify(dataArray), (err) => {
+            fs.writeFile("user.json", JSON.stringify(dataArray), (err) => {
                 !err ? res.send(dataArray) : res.send({ err })
             })
 
@@ -151,13 +152,13 @@ app.patch("/api/v1/bulk-update", (req, res) => {
 app.delete("/api/v1/delete/:id", (req, res) => {
     const pid = req.params.id
 
-    fs.readFile('data/user.json', 'utf8', (err, data) => {
+    fs.readFile('user.json', 'utf8', (err, data) => {
         if (err) return res.status(400).send({ err: 'No Data found ' })
         let dataArray = JSON.parse(data);
         const users = dataArray['users']
         const newUsers = users.filter(user => user.id !== pid);
         dataArray = newUsers
-        fs.writeFile("data/user.json", JSON.stringify(dataArray), (err) => {
+        fs.writeFile("user.json", JSON.stringify(dataArray), (err) => {
             !err ? res.send(dataArray) : res.send({ err })
         })
 
