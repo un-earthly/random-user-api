@@ -165,6 +165,4 @@ app.delete("/api/v1/delete/:id", (req, res) => {
     })
 
 })
-app.listen(process.env.HOST || 80, () => {
-    console.log(`server is running in ${process.env.HOST}`)
-})
+app.listen(process.env.PORT || 80)
