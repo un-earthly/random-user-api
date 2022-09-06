@@ -39,7 +39,7 @@ app.post("/api/v1/save", (req, res) => {
         if (!err) {
             let dataArray = JSON.parse(data);
             dataArray['users'].push(req.body);
-            fs.writeFile("user.json", JSON.stringify(dataArray), (err) => {
+            fs.writeFile("data/user.json", JSON.stringify(dataArray), (err) => {
                 !err ? res.send(dataArray) : res.send(err)
             })
         }
@@ -82,7 +82,7 @@ app.patch("/api/v1/update/:id", (req, res) => {
 
             if (userIndex !== -1) {
                 users[userIndex] = user;
-                fs.writeFile("user.json", JSON.stringify(dataArray), (err) => {
+                fs.writeFile("data/user.json", JSON.stringify(dataArray), (err) => {
                     !err ? res.send(dataArray) : res.send(err)
                 })
             }
@@ -138,7 +138,7 @@ app.patch("/api/v1/bulk-update", (req, res) => {
             for (let i = 0; i < usersIndex.length; i++) {
                 usersIndex[i] = filteredUsers[i]
             }
-            fs.writeFile("user.json", JSON.stringify(dataArray), (err) => {
+            fs.writeFile("data/user.json", JSON.stringify(dataArray), (err) => {
                 !err ? res.send(dataArray) : res.send({ err })
             })
 
@@ -157,7 +157,7 @@ app.delete("/api/v1/delete/:id", (req, res) => {
         const users = dataArray['users']
         const newUsers = users.filter(user => user.id !== pid);
         dataArray = newUsers
-        fs.writeFile("user.json", JSON.stringify(dataArray), (err) => {
+        fs.writeFile("data/user.json", JSON.stringify(dataArray), (err) => {
             !err ? res.send(dataArray) : res.send({ err })
         })
 
