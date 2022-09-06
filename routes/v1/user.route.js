@@ -1,13 +1,13 @@
-// const { addUser, bulkUpdateUser, deleteUser, getAllUsers, updateUser, getRandomUser } = require("../../controllers/user.controller");
+const { addUser, bulkUpdateUser, deleteUser, getAllUsers, updateUser, getRandomUser } = require("../../controllers/user.controller");
 
-// const router = require("express").Router();
+const router = require("express").Router();
 
 
-// router
-// router
-// router
-// router
-// router
-// router
+router.get("/all", getAllUsers)
+router.get("/random", getRandomUser)
+router.post("/save", addUser)
+router.patch("/update/:id", updateUser)
+router.patch("/bulk-update", bulkUpdateUser)
+router.delete("/delete/:id", deleteUser)
 
-// module.exports = router;
+module.exports = router;

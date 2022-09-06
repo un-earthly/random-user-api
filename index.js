@@ -29,7 +29,7 @@ app.get("/api/v1/random", (req, res) => {
         }
 
         else {
-            res.send(err)
+            res.send({ err })
         }
 
     })
@@ -43,8 +43,10 @@ app.post("/api/v1/save", (req, res) => {
                 !err ? res.send(dataArray) : res.send(err)
             })
         }
+        else {
 
-        res.send(err)
+            res.send({ err })
+        }
 
     })
 
@@ -85,7 +87,10 @@ app.patch("/api/v1/update/:id", (req, res) => {
                 })
             }
         }
-        res.send(err)
+        else {
+
+            res.send({ err })
+        }
     })
 
 })
@@ -97,6 +102,8 @@ app.patch("/api/v1/bulk-update", (req, res) => {
     const usersIdsArray = toUpdate.map(user => user.id)
     if (!usersIdsArray) return res.status(411).send({ err: 'No Id found in request body to update Users' })
     fs.readFile('data/user.json', 'utf8', (err, data) => {
+        if (err) return res.status(500).send({ err })
+
         let dataArray = JSON.parse(data);
         const users = dataArray['users'];
         const filteredUsers = users.filter(function (user) {
@@ -132,7 +139,7 @@ app.patch("/api/v1/bulk-update", (req, res) => {
                 usersIndex[i] = filteredUsers[i]
             }
             fs.writeFile("user.json", JSON.stringify(dataArray), (err) => {
-                !err ? res.send(dataArray) : res.send(err)
+                !err ? res.send(dataArray) : res.send({ err })
             })
 
         }
@@ -145,12 +152,13 @@ app.delete("/api/v1/delete/:id", (req, res) => {
     const pid = req.params.id
 
     fs.readFile('data/user.json', 'utf8', (err, data) => {
+        if (err) return res.status(400).send({ err: 'No Data found ' })
         let dataArray = JSON.parse(data);
         const users = dataArray['users']
         const newUsers = users.filter(user => user.id !== pid);
         dataArray = newUsers
         fs.writeFile("user.json", JSON.stringify(dataArray), (err) => {
-            !err ? res.send(dataArray) : res.send(err)
+            !err ? res.send(dataArray) : res.send({ err })
         })
 
     })
