@@ -74,7 +74,7 @@ module.exports.updateUser = (req, res, next) => {
     })
 
 }
-module.exports.bulkUpdateUser = (req, res, next) => {
+module.exports.bulkUpdateUser = (req, res) => {
     const toUpdate = req.body
 
     if (Object.entries(toUpdate).length === 0) return res.status(400).send({ err: 'No Data found in request body to update User' })
